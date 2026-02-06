@@ -60,7 +60,8 @@ router.post("/orders", authMiddleware, async (req: Request, res: Response) => {
     // Validate request body
     const parsed = CreateOrderSchema.safeParse(req.body);
     if (!parsed.success) {
-      res.status(400).json({ error: "Invalid order data", details: parsed.error.issues });
+      console.error("Order validation error:", parsed.error.issues);
+      res.status(400).json({ error: "Invalid order data" });
       return;
     }
 

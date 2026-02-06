@@ -133,8 +133,8 @@ function App() {
         window.Telegram.WebApp.sendData(
           JSON.stringify({ orderId: order.id, totalCents: order.totalCents })
         );
-      } catch {
-        // sendData might fail outside of keyboard-launched webapps
+      } catch (sendErr) {
+        console.warn("sendData failed (expected outside keyboard-launched webapps):", sendErr);
       }
     } catch (err) {
       console.error("Checkout error:", err);
