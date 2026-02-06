@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>មគ្គុទ្ទេស Telegram Mini App Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+  <header class="bg-blue-600 text-white py-8 px-4">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-3xl font-bold mb-4">🛒 Telegram Mini App Shop — មគ្គុទ្ទេសពេញលេញ</h1>
+      <ul class="list-disc list-inside space-y-1 text-blue-100">
+        <li>បង្កើត Telegram Bot + Mini App (React) + API (Express/TS) + MySQL</li>
+        <li>រៀនពី concept ដល់ deploy-ready</li>
+        <li>ចម្លង code ដោយផ្ទាល់បាន — copy/paste runnable</li>
+        <li>ត្រូវការ Node.js 18+, Docker, Telegram account</li>
+        <li>សម្រាប់ junior developers / students</li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto py-8 px-4 space-y-12">
+
+    <!-- Stage 0 -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 mb-4">ដំណាក់កាលទី 0 — តម្រូវការមុន (Prerequisites)</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <h3 class="font-semibold text-blue-600 mb-2">📘 Concept</h3>
+          <p>មុននឹងចាប់ផ្ដើម ត្រូវដំឡើង tools ចាំបាច់៖ Node.js, Docker, ngrok និង Telegram account។ Telegram Mini App ត្រូវការ HTTPS ដើម្បីដំណើរការ។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+          <h3 class="font-semibold text-green-600 mb-2">💻 Code</h3>
+          <pre class="bg-gray-900 text-green-400 rounded p-3 text-sm overflow-x-auto">
+# ពិនិត្យ Node.js
+node -v   # >= 18
+
+# ដំឡើង Docker
+docker --version
+
+# ដំឡើង ngrok
+ngrok --version
+
+# Clone project
+git clone &lt;repo-url&gt;
+cd telegram-mini-app-shop
+npm install
+          </pre>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+          <h3 class="font-semibold text-yellow-600 mb-2">✅ Output</h3>
+          <p>Tools ទាំងអស់ត្រូវដំឡើងរួចរាល់។ <code>node -v</code> បង្ហាញ v18+។ Docker ដំណើរការបាន។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <h3 class="font-semibold text-purple-600 mb-2">🎯 Practice</h3>
+          <p>បង្កើត folder ថ្មី រត់ <code>npm init -y</code>។ សាកល្បង <code>docker run hello-world</code>។ ចុះឈ្មោះ ngrok account។</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stage 1 -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 mb-4">ដំណាក់កាលទី 1 — បង្កើត Bot + BotFather Settings</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <h3 class="font-semibold text-blue-600 mb-2">📘 Concept</h3>
+          <p>ជាដំបូង ត្រូវបង្កើត Bot តាមរយៈ @BotFather នៅ Telegram។ យក Bot Token ដើម្បីប្រើក្នុង API និង Bot code។ កំណត់ Menu Button ឲ្យចង្អុលទៅ Mini App URL។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+          <h3 class="font-semibold text-green-600 mb-2">💻 Code</h3>
+          <pre class="bg-gray-900 text-green-400 rounded p-3 text-sm overflow-x-auto">
+# នៅ Telegram សរសេរទៅ @BotFather:
+/newbot
+# ដាក់ឈ្មោះ Bot
+# យក token ទុក: 123456:ABC-DEF...
+
+# កំណត់ Menu Button:
+/mybots → Bot → Bot Settings
+→ Menu Button → Set URL
+→ https://your-ngrok-url.ngrok.io
+          </pre>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+          <h3 class="font-semibold text-yellow-600 mb-2">✅ Output</h3>
+          <p>មាន Bot Token រួចរាល់។ Bot ឆ្លើយតបនៅក្នុង Telegram។ Menu Button ត្រូវកំណត់បន្ទាប់ពី deploy web app។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <h3 class="font-semibold text-purple-600 mb-2">🎯 Practice</h3>
+          <p>បង្កើត Bot ផ្សេង សម្រាប់ testing។ សាកល្បង /start command។</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stage 2 -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 mb-4">ដំណាក់កាលទី 2 — Monorepo Setup</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <h3 class="font-semibold text-blue-600 mb-2">📘 Concept</h3>
+          <p>ប្រើ npm workspaces ដើម្បីគ្រប់គ្រង 3 apps ក្នុង repo តែមួយ៖ api (Express), bot (grammY), web (React/Vite)។ រចនាសម្ព័ន្ធច្បាស់លាស់ ងាយគ្រប់គ្រង។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+          <h3 class="font-semibold text-green-600 mb-2">💻 Code</h3>
+          <pre class="bg-gray-900 text-green-400 rounded p-3 text-sm overflow-x-auto">
+telegram-mini-app-shop/
+├── apps/
+│   ├── api/     # Express + TS + MySQL
+│   ├── bot/     # grammY bot
+│   └── web/     # React + Vite
+├── docker-compose.yml
+└── package.json  # workspaces: ["apps/*"]
+          </pre>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+          <h3 class="font-semibold text-yellow-600 mb-2">✅ Output</h3>
+          <p><code>npm install</code> ដំណើរការបាន។ Workspace structure ត្រឹមត្រូវ។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <h3 class="font-semibold text-purple-600 mb-2">🎯 Practice</h3>
+          <p>រត់ <code>npm -w apps/api run build</code> ពិនិត្យថា workspaces ដំណើរការ។</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stage 3 -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 mb-4">ដំណាក់កាលទី 3 — MySQL + Schema</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <h3 class="font-semibold text-blue-600 mb-2">📘 Concept</h3>
+          <p>ប្រើ Docker Compose ដើម្បីដំណើរការ MySQL។ Schema មាន 4 tables៖ users, products, orders, order_items។ Seed data សម្រាប់ products។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+          <h3 class="font-semibold text-green-600 mb-2">💻 Code</h3>
+          <pre class="bg-gray-900 text-green-400 rounded p-3 text-sm overflow-x-auto">
+-- users table
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  telegramId BIGINT UNIQUE NOT NULL,
+  firstName VARCHAR(255),
+  username VARCHAR(255),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- products table
+CREATE TABLE products (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  priceCents INT NOT NULL,
+  imageUrl VARCHAR(512),
+  active BOOLEAN DEFAULT TRUE
+);
+
+-- orders + order_items
+CREATE TABLE orders (...);
+CREATE TABLE order_items (...);
+          </pre>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+          <h3 class="font-semibold text-yellow-600 mb-2">✅ Output</h3>
+          <p><code>docker compose up -d</code> → MySQL ដំណើរការ។ Schema ត្រូវ migrate រួច។ Products ត្រូវ seed រួច។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <h3 class="font-semibold text-purple-600 mb-2">🎯 Practice</h3>
+          <p>ភ្ជាប់ MySQL ដោយប្រើ <code>mysql -u shopuser -p shopdb</code>។ Run <code>SELECT * FROM products;</code>។</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stage 4 -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 mb-4">ដំណាក់កាលទី 4 — API + Endpoints</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <h3 class="font-semibold text-blue-600 mb-2">📘 Concept</h3>
+          <p>Express API ផ្ដល់ endpoints សម្រាប់ products, orders និង user auth។ ប្រើ Telegram initData HMAC validation ដើម្បី authenticate users។ secretKey = HMAC_SHA256("WebAppData", bot_token)។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+          <h3 class="font-semibold text-green-600 mb-2">💻 Code</h3>
+          <pre class="bg-gray-900 text-green-400 rounded p-3 text-sm overflow-x-auto">
+// Telegram initData validation
+import crypto from "crypto";
+
+function validateInitData(
+  initData: string,
+  botToken: string
+): TelegramUser | null {
+  const params = new URLSearchParams(initData);
+  const hash = params.get("hash");
+  params.delete("hash");
+  // sort + join
+  const dataCheckString = [...params.entries()]
+    .sort(([a], [b]) =&gt; a.localeCompare(b))
+    .map(([k, v]) =&gt; `${k}=${v}`)
+    .join("\n");
+  const secretKey = crypto
+    .createHmac("sha256", "WebAppData")
+    .update(botToken)
+    .digest();
+  const computed = crypto
+    .createHmac("sha256", secretKey)
+    .update(dataCheckString)
+    .digest("hex");
+  if (computed !== hash) return null;
+  // check auth_date
+  ...
+}
+          </pre>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+          <h3 class="font-semibold text-yellow-600 mb-2">✅ Output</h3>
+          <p><code>GET /health</code> → <code>{ ok: true }</code>។ <code>GET /products</code> → list products។ Auth endpoints ត្រូវការ initData header។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <h3 class="font-semibold text-purple-600 mb-2">🎯 Practice</h3>
+          <p>ប្រើ curl ដើម្បី test <code>GET /health</code>។ សាកល្បង <code>GET /products</code>។ Postman ក៏បានដែរ។</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stage 5 -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 mb-4">ដំណាក់កាលទី 5 — Bot + Open Mini App</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <h3 class="font-semibold text-blue-600 mb-2">📘 Concept</h3>
+          <p>Bot ប្រើ grammY framework។ នៅពេល user សរសេរ /start, Bot ផ្ញើ button "🛒 Open Shop" ដែលបើក Mini App។ Bot ក៏ទទួល web_app_data ពី Mini App ផងដែរ។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+          <h3 class="font-semibold text-green-600 mb-2">💻 Code</h3>
+          <pre class="bg-gray-900 text-green-400 rounded p-3 text-sm overflow-x-auto">
+import { Bot, Keyboard } from "grammy";
+
+const bot = new Bot(process.env.TELEGRAM_BOT_TOKEN!);
+
+bot.command("start", (ctx) =&gt; {
+  const kb = new Keyboard()
+    .webApp("🛒 Open Shop", WEBAPP_URL)
+    .resized();
+  ctx.reply("សួស្តី! ចុច button ខាងក្រោម:", {
+    reply_markup: kb,
+  });
+});
+
+// ទទួល web_app_data
+bot.on("message:web_app_data", (ctx) =&gt; {
+  const data = JSON.parse(
+    ctx.message.web_app_data.data
+  );
+  ctx.reply(`Order #${data.orderId} created!`);
+});
+
+bot.start();
+          </pre>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+          <h3 class="font-semibold text-yellow-600 mb-2">✅ Output</h3>
+          <p>/start → button "Open Shop" ត្រូវបង្ហាញ។ ចុច button → Mini App បើក។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <h3 class="font-semibold text-purple-600 mb-2">🎯 Practice</h3>
+          <p>សរសេរ /start នៅក្នុង Telegram។ ពិនិត្យ button បង្ហាញ។ ព្យាយាមបន្ថែម command ផ្សេង។</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stage 6 -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 mb-4">ដំណាក់កាលទី 6 — Web UI + Cart + Checkout</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <h3 class="font-semibold text-blue-600 mb-2">📘 Concept</h3>
+          <p>React Mini App ប្រើ Vite + TypeScript។ Tailwind CSS via CDN។ UI mobile-first មាន product cards, cart section, checkout button។ ប្រើ Telegram.WebApp.initData សម្រាប់ auth។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+          <h3 class="font-semibold text-green-600 mb-2">💻 Code</h3>
+          <pre class="bg-gray-900 text-green-400 rounded p-3 text-sm overflow-x-auto">
+// App.tsx
+useEffect(() =&gt; {
+  window.Telegram.WebApp.ready();
+  window.Telegram.WebApp.expand();
+  fetch(API_URL + "/products")
+    .then(r =&gt; r.json())
+    .then(setProducts);
+}, []);
+
+// Checkout
+const checkout = async () =&gt; {
+  const initData =
+    window.Telegram.WebApp.initData;
+  const res = await fetch(
+    API_URL + "/orders",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-telegram-init-data": initData,
+      },
+      body: JSON.stringify({ items: cart }),
+    }
+  );
+  const order = await res.json();
+  // ផ្ញើ data ទៅ Bot
+  window.Telegram.WebApp.sendData(
+    JSON.stringify({ orderId: order.id })
+  );
+};
+          </pre>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+          <h3 class="font-semibold text-yellow-600 mb-2">✅ Output</h3>
+          <p>Products ត្រូវបង្ហាញ។ Add to cart ដំណើរការ។ Checkout បង្កើត order និង ផ្ញើ data ទៅ bot។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <h3 class="font-semibold text-purple-600 mb-2">🎯 Practice</h3>
+          <p>បន្ថែម product ផ្សេង។ បង្កើត UI ស្រស់ជាង។ ព្យាយាមបន្ថែម quantity controls។</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stage 7 -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 mb-4">ដំណាក់កាលទី 7 — Local Test Checklist</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <h3 class="font-semibold text-blue-600 mb-2">📘 Concept</h3>
+          <p>Test ទាំង local (without Telegram) និង inside Telegram។ ប្រើ ngrok សម្រាប់ HTTPS URL ដើម្បី test Mini App ក្នុង Telegram។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+          <h3 class="font-semibold text-green-600 mb-2">💻 Code</h3>
+          <pre class="bg-gray-900 text-green-400 rounded p-3 text-sm overflow-x-auto">
+# 1. Start MySQL
+docker compose up -d
+
+# 2. Migrate + Seed
+npm -w apps/api run migrate
+npm -w apps/api run seed
+
+# 3. Start API
+npm -w apps/api run dev
+
+# 4. Start Web
+npm -w apps/web run dev
+
+# 5. ngrok (expose web)
+ngrok http 5173
+
+# 6. Update WEBAPP_URL in .env
+# 7. Start Bot
+npm -w apps/bot run dev
+
+# 8. Test in Telegram: /start → Open Shop
+          </pre>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+          <h3 class="font-semibold text-yellow-600 mb-2">✅ Output</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>GET /health → { ok: true }</li>
+            <li>GET /products → list products</li>
+            <li>Mini App loads products</li>
+            <li>Cart works, checkout creates order</li>
+            <li>Bot receives order data</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <h3 class="font-semibold text-purple-600 mb-2">🎯 Practice</h3>
+          <p>Test outside Telegram — "Open in Telegram" message ត្រូវបង្ហាញ។ Test error cases ដោយផ្ញើ invalid initData។</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stage 8 -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 mb-4">ដំណាក់កាលទី 8 — Deploy Checklist</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <h3 class="font-semibold text-blue-600 mb-2">📘 Concept</h3>
+          <p>Deploy web (Vercel/Netlify), API (Render/Railway), Bot (Render/VPS)។ HTTPS ចាំបាច់។ Config env variables សម្រាប់ production។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+          <h3 class="font-semibold text-green-600 mb-2">💻 Code</h3>
+          <pre class="bg-gray-900 text-green-400 rounded p-3 text-sm overflow-x-auto">
+# Deploy Web (Vercel)
+cd apps/web
+npx vercel --prod
+# Set env: VITE_API_URL
+
+# Deploy API (Render)
+# Build: npm -w apps/api run build
+# Start: node apps/api/dist/index.js
+# Env: DATABASE_URL, TELEGRAM_BOT_TOKEN,
+#      CORS_ORIGIN
+
+# Deploy Bot (Render)
+# Build: npm -w apps/bot run build
+# Start: node apps/bot/dist/index.js
+# Env: TELEGRAM_BOT_TOKEN, WEBAPP_URL
+          </pre>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+          <h3 class="font-semibold text-yellow-600 mb-2">✅ Output</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>Web accessible via HTTPS</li>
+            <li>API responds to /health</li>
+            <li>Bot online in Telegram</li>
+            <li>Full flow works: /start → shop → checkout</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <h3 class="font-semibold text-purple-600 mb-2">🎯 Practice</h3>
+          <p>Deploy ទៅ staging environment។ Test full flow។ Monitor logs សម្រាប់ errors។</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stage 9 -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 mb-4">ដំណាក់កាលទី 9 — Hardening + Next Steps</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+          <h3 class="font-semibold text-blue-600 mb-2">📘 Concept</h3>
+          <p>Hardening មានន័យថា ធ្វើឲ្យ app មានសុវត្ថិភាពនិងរឹងមាំ៖ CORS, rate limiting, input validation (Zod), logging, error handling។ Extension features មាន Admin CRUD, Payments, Notifications។</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+          <h3 class="font-semibold text-green-600 mb-2">💻 Code</h3>
+          <pre class="bg-gray-900 text-green-400 rounded p-3 text-sm overflow-x-auto">
+// Rate limiting
+import rateLimit from "express-rate-limit";
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100
+}));
+
+// Zod validation
+import { z } from "zod";
+const OrderSchema = z.object({
+  items: z.array(z.object({
+    productId: z.number().int().positive(),
+    qty: z.number().int().positive(),
+  })).min(1),
+});
+
+// CORS
+app.use(cors({
+  origin: process.env.CORS_ORIGIN
+}));
+          </pre>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+          <h3 class="font-semibold text-yellow-600 mb-2">✅ Output</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>Invalid requests ត្រូវ reject</li>
+            <li>CORS blocks unauthorized origins</li>
+            <li>Rate limiting prevents abuse</li>
+            <li>Logs ត្រូវបង្ហាញ</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-lg shadow p-4 border-l-4 border-purple-500">
+          <h3 class="font-semibold text-purple-600 mb-2">🎯 Practice</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>បន្ថែម Admin product CRUD endpoints</li>
+            <li>ស្រាវជ្រាវ payment integration (Stripe)</li>
+            <li>បន្ថែម order status notifications ទៅ bot</li>
+            <li>បន្ថែម order history page ក្នុង Mini App</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-12">
+    <p>🛒 Telegram Mini App Shop — មគ្គុទ្ទេសពេញលេញ</p>
+    <p class="text-sm mt-1">បង្កើតដោយ ❤️ សម្រាប់ junior developers</p>
+  </footer>
+
+</body>
+</html>
