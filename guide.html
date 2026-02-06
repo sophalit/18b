@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Telegram Mini App Shop — Full Guide</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    pre { white-space: pre-wrap; word-break: break-all; }
+    code { font-size: 0.85rem; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans leading-relaxed">
+
+  <!-- ======== HEADER ======== -->
+  <header class="bg-blue-700 text-white py-10">
+    <div class="max-w-4xl mx-auto px-4">
+      <h1 class="text-3xl font-bold mb-4">🛒 Telegram Mini App Shop</h1>
+      <p class="text-lg mb-4">From scratch → Working MVP → Deploy-ready</p>
+      <ul class="list-disc list-inside space-y-1 text-blue-100">
+        <li>Follow stages 0-9 in order</li>
+        <li>Each stage has 4 cards: <strong>Concept</strong>, <strong>Code</strong>, <strong>Output</strong>, <strong>Practice</strong></li>
+        <li>All code is TypeScript — API (Express), Bot (grammY), Web (React + Vite)</li>
+        <li>Tailwind CSS via CDN — no build-time config needed</li>
+        <li>Copy/paste every file from the project section below the guide</li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-8 space-y-12">
+
+    <!-- ==================== STAGE 0 ==================== -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">Stage 0 — Prerequisites &amp; Tools</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <!-- Concept -->
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-blue-500">
+          <h3 class="font-bold text-blue-600 mb-2">💡 Concept</h3>
+          <p>Before writing code, install the toolchain. We use a <strong>monorepo</strong> (npm workspaces) with three apps: <code>api</code>, <code>bot</code>, and <code>web</code>. MySQL runs in Docker so you don't install it on your machine.</p>
+          <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+            <li><strong>Node.js ≥ 18</strong> (LTS)</li>
+            <li><strong>npm ≥ 9</strong> (comes with Node)</li>
+            <li><strong>Docker Desktop</strong> (for MySQL)</li>
+            <li><strong>ngrok</strong> (free tier) — exposes localhost over HTTPS</li>
+            <li>A <strong>Telegram account</strong> + BotFather bot</li>
+            <li>A code editor (VS Code recommended)</li>
+          </ul>
+        </div>
+
+        <!-- Code -->
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-green-500">
+          <h3 class="font-bold text-green-600 mb-2">🖥️ Code</h3>
+          <pre class="bg-gray-900 text-green-300 rounded p-3 text-xs overflow-x-auto"><code># Check versions
+node -v        # should be ≥ 18
+npm -v         # should be ≥ 9
+docker -v      # Docker Engine ≥ 20
+
+# Install ngrok (macOS)
+brew install ngrok
+# or download from https://ngrok.com
+
+# Sign up for ngrok free account
+ngrok config add-authtoken YOUR_TOKEN</code></pre>
+        </div>
+
+        <!-- Output -->
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500">
+          <h3 class="font-bold text-yellow-600 mb-2">✅ Output</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li><code>node -v</code> prints v18+ ✓</li>
+            <li><code>docker -v</code> prints 20+ ✓</li>
+            <li><code>ngrok version</code> prints 3+ ✓</li>
+          </ul>
+        </div>
+
+        <!-- Practice -->
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-purple-500">
+          <h3 class="font-bold text-purple-600 mb-2">🧪 Practice</h3>
+          <ol class="list-decimal list-inside text-sm space-y-1">
+            <li>Run <code>docker run --rm hello-world</code> — confirm Docker works.</li>
+            <li>Run <code>ngrok http 3000</code> — see a Forwarding URL. Press Ctrl+C to stop.</li>
+            <li>Create a test folder and run <code>npm init -y</code> — check <code>package.json</code> is generated.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== STAGE 1 ==================== -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">Stage 1 — Create Telegram Bot + BotFather</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-blue-500">
+          <h3 class="font-bold text-blue-600 mb-2">💡 Concept</h3>
+          <p>Every Telegram Mini App is attached to a bot. The bot provides the <strong>"Open Shop"</strong> button, and the token is used for <strong>initData validation</strong>.</p>
+          <ul class="list-disc list-inside mt-2 text-sm space-y-1">
+            <li>Open Telegram, talk to <strong>@BotFather</strong></li>
+            <li>Send <code>/newbot</code>, choose a name and username</li>
+            <li>Copy the <strong>bot token</strong> (keep it secret!)</li>
+            <li>Send <code>/mybots</code> → select bot → <strong>Bot Settings</strong> → <strong>Menu Button</strong> → set URL later (after ngrok)</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-green-500">
+          <h3 class="font-bold text-green-600 mb-2">🖥️ Code</h3>
+          <pre class="bg-gray-900 text-green-300 rounded p-3 text-xs overflow-x-auto"><code># In BotFather chat:
+/newbot
+# → Name: My Test Shop
+# → Username: my_test_shop_bot
+# → Token: 123456789:ABCdefGHI...
+
+# Save token to .env files later:
+TELEGRAM_BOT_TOKEN=123456789:ABCdefGHI...</code></pre>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500">
+          <h3 class="font-bold text-yellow-600 mb-2">✅ Output</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>BotFather replies with your bot token ✓</li>
+            <li>Searching your bot username in Telegram shows your bot ✓</li>
+            <li>Sending <code>/start</code> to your bot gets no response (yet) ✓</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-purple-500">
+          <h3 class="font-bold text-purple-600 mb-2">🧪 Practice</h3>
+          <ol class="list-decimal list-inside text-sm space-y-1">
+            <li>Create a second test bot — practice the BotFather flow.</li>
+            <li>Try <code>/setdescription</code> on your bot in BotFather.</li>
+            <li>Note: You can always <code>/deletebot</code> test bots later.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== STAGE 2 ==================== -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">Stage 2 — Monorepo Setup</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-blue-500">
+          <h3 class="font-bold text-blue-600 mb-2">💡 Concept</h3>
+          <p>We use <strong>npm workspaces</strong> to manage three apps in one repo. The root <code>package.json</code> declares workspaces under <code>apps/*</code>. One <code>npm install</code> at root installs dependencies for all apps.</p>
+          <p class="mt-2 text-sm">Folder layout:</p>
+          <pre class="bg-gray-100 rounded p-2 text-xs mt-1"><code>tg-shop/
+├── apps/
+│   ├── api/    ← Express + Prisma
+│   ├── bot/    ← grammY bot
+│   └── web/    ← React + Vite
+├── docker-compose.yml
+└── package.json</code></pre>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-green-500">
+          <h3 class="font-bold text-green-600 mb-2">🖥️ Code</h3>
+          <pre class="bg-gray-900 text-green-300 rounded p-3 text-xs overflow-x-auto"><code># Create root
+mkdir tg-shop && cd tg-shop
+npm init -y
+
+# Edit package.json:
+# "workspaces": ["apps/*"]
+
+# Create app dirs
+mkdir -p apps/api apps/bot apps/web
+
+# Init each workspace
+cd apps/api && npm init -y && cd ../..
+cd apps/bot && npm init -y && cd ../..
+cd apps/web && npm init -y && cd ../..
+
+# Install all from root
+npm install</code></pre>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500">
+          <h3 class="font-bold text-yellow-600 mb-2">✅ Output</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>Root <code>node_modules/</code> created ✓</li>
+            <li>Each <code>apps/*/package.json</code> exists ✓</li>
+            <li><code>npm ls --workspaces</code> shows 3 packages ✓</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-purple-500">
+          <h3 class="font-bold text-purple-600 mb-2">🧪 Practice</h3>
+          <ol class="list-decimal list-inside text-sm space-y-1">
+            <li>Run <code>npm ls -a --workspaces</code> and read the output.</li>
+            <li>Add a dev dependency to just the api: <code>npm i -D typescript -w apps/api</code></li>
+            <li>Understand that <code>-w</code> targets a specific workspace.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== STAGE 3 ==================== -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">Stage 3 — MySQL + Prisma Schema</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-blue-500">
+          <h3 class="font-bold text-blue-600 mb-2">💡 Concept</h3>
+          <p>MySQL runs in Docker (no local install needed). <strong>Prisma</strong> is our ORM — it auto-generates a type-safe client from a schema file.</p>
+          <p class="mt-2 text-sm">Schema tables:</p>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li><strong>User</strong> — telegramId (unique), firstName, username</li>
+            <li><strong>Product</strong> — title, priceCents, imageUrl, active</li>
+            <li><strong>Order</strong> — userId FK, totalCents, status</li>
+            <li><strong>OrderItem</strong> — orderId FK, productId FK, qty, unitCents</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-green-500">
+          <h3 class="font-bold text-green-600 mb-2">🖥️ Code</h3>
+          <pre class="bg-gray-900 text-green-300 rounded p-3 text-xs overflow-x-auto"><code># docker-compose.yml at root
+services:
+  mysql:
+    image: mysql:8.0
+    ports: ["3306:3306"]
+    environment:
+      MYSQL_ROOT_PASSWORD: tgshop
+      MYSQL_USER: tgshop
+      MYSQL_PASSWORD: tgshop
+      MYSQL_DATABASE: tgshop
+    volumes:
+      - mysqldata:/var/lib/mysql
+volumes:
+  mysqldata:
+
+# Start MySQL
+docker compose up -d
+
+# In apps/api:
+npx prisma init
+# Edit prisma/schema.prisma → add models
+npx prisma migrate dev --name init
+npx prisma db seed</code></pre>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500">
+          <h3 class="font-bold text-yellow-600 mb-2">✅ Output</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li><code>docker ps</code> shows <code>mysql:8.0</code> running ✓</li>
+            <li>Prisma migration creates tables ✓</li>
+            <li>Seed inserts sample products ✓</li>
+            <li><code>npx prisma studio</code> opens a data browser ✓</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-purple-500">
+          <h3 class="font-bold text-purple-600 mb-2">🧪 Practice</h3>
+          <ol class="list-decimal list-inside text-sm space-y-1">
+            <li>Open Prisma Studio (<code>npx prisma studio</code>) and browse the Product table.</li>
+            <li>Add a new product row manually in Studio.</li>
+            <li>Reset the database: <code>npx prisma migrate reset</code> — observe it re-seeds.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== STAGE 4 ==================== -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">Stage 4 — API (Express + TypeScript)</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-blue-500">
+          <h3 class="font-bold text-blue-600 mb-2">💡 Concept</h3>
+          <p>The API is a standard Express server. Key points:</p>
+          <ul class="list-disc list-inside text-sm space-y-1 mt-2">
+            <li><strong>initData validation middleware</strong> — HMAC-SHA256 per Telegram spec</li>
+            <li><strong>GET /health</strong> — health check</li>
+            <li><strong>GET /products</strong> — public, returns active products</li>
+            <li><strong>GET /me</strong> — authenticated, upserts user</li>
+            <li><strong>POST /orders</strong> — authenticated, creates order + items</li>
+          </ul>
+          <p class="text-sm mt-2 text-red-600 font-semibold">⚠ Never trust initDataUnsafe. Always validate on backend!</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-green-500">
+          <h3 class="font-bold text-green-600 mb-2">🖥️ Code</h3>
+          <pre class="bg-gray-900 text-green-300 rounded p-3 text-xs overflow-x-auto"><code>// initData validation (core logic)
+import crypto from "crypto";
+
+function validateInitData(initData: string, botToken: string) {
+  const params = new URLSearchParams(initData);
+  const hash = params.get("hash");
+  params.delete("hash");
+
+  const pairs = [...params.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([k, v]) => k + "=" + v)
+    .join("\n");
+
+  const secretKey = crypto
+    .createHmac("sha256", "WebAppData")
+    .update(botToken)
+    .digest();
+
+  const computed = crypto
+    .createHmac("sha256", secretKey)
+    .update(pairs)
+    .digest("hex");
+
+  if (computed !== hash) return null;
+
+  const authDate = Number(params.get("auth_date"));
+  if (Date.now() / 1000 - authDate > 86400) return null;
+
+  return JSON.parse(params.get("user") ?? "{}");
+}</code></pre>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500">
+          <h3 class="font-bold text-yellow-600 mb-2">✅ Output</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li><code>curl http://localhost:3001/health</code> → <code>{"ok":true}</code> ✓</li>
+            <li><code>curl http://localhost:3001/products</code> → JSON array of products ✓</li>
+            <li>Requests to <code>/me</code> or <code>/orders</code> without initData → 401 ✓</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-purple-500">
+          <h3 class="font-bold text-purple-600 mb-2">🧪 Practice</h3>
+          <ol class="list-decimal list-inside text-sm space-y-1">
+            <li>Hit <code>/products</code> with <code>curl</code> and pipe to <code>jq</code> for pretty output.</li>
+            <li>Try sending a fake <code>x-telegram-init-data</code> header to <code>/me</code> — confirm 401.</li>
+            <li>Add a new endpoint <code>GET /products/:id</code> that returns a single product.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== STAGE 5 ==================== -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">Stage 5 — Bot (grammY) + Open Shop Button</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-blue-500">
+          <h3 class="font-bold text-blue-600 mb-2">💡 Concept</h3>
+          <p>The bot uses <strong>grammY</strong> (lightweight Telegram bot framework). It does two things:</p>
+          <ol class="list-decimal list-inside text-sm space-y-1 mt-2">
+            <li>On <code>/start</code>, send a keyboard with a <strong>WebApp button</strong> that opens the Mini App</li>
+            <li>Listen for <code>web_app_data</code> (sent by the Mini App via <code>sendData</code>) and confirm the order</li>
+          </ol>
+          <p class="text-sm mt-2">The WebApp URL must be <strong>HTTPS</strong> — use ngrok locally.</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-green-500">
+          <h3 class="font-bold text-green-600 mb-2">🖥️ Code</h3>
+          <pre class="bg-gray-900 text-green-300 rounded p-3 text-xs overflow-x-auto"><code>import { Bot, Keyboard } from "grammy";
+
+const bot = new Bot(process.env.TELEGRAM_BOT_TOKEN!);
+
+bot.command("start", (ctx) => {
+  const kb = new Keyboard()
+    .webApp("🛒 Open Shop", process.env.WEBAPP_URL!)
+    .resized();
+  return ctx.reply("Welcome! Tap below to open the shop.", {
+    reply_markup: kb,
+  });
+});
+
+bot.on("message:web_app_data", (ctx) => {
+  const data = JSON.parse(ctx.message.web_app_data.data);
+  ctx.reply(
+    `✅ Order received! ${data.itemCount} items, total: $${(data.totalCents / 100).toFixed(2)}`
+  );
+});
+
+bot.start();</code></pre>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500">
+          <h3 class="font-bold text-yellow-600 mb-2">✅ Output</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>Send <code>/start</code> → Bot replies with "Open Shop" button ✓</li>
+            <li>Tapping "Open Shop" opens the Mini App in Telegram webview ✓</li>
+            <li>After checkout, bot confirms order in chat ✓</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-purple-500">
+          <h3 class="font-bold text-purple-600 mb-2">🧪 Practice</h3>
+          <ol class="list-decimal list-inside text-sm space-y-1">
+            <li>Change the bot's greeting message and restart.</li>
+            <li>Add a second command <code>/help</code> that lists available actions.</li>
+            <li>Try using an <strong>inline keyboard</strong> instead of a reply keyboard for the WebApp button.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== STAGE 6 ==================== -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">Stage 6 — Web UI (React + Vite + Tailwind CDN)</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-blue-500">
+          <h3 class="font-bold text-blue-600 mb-2">💡 Concept</h3>
+          <p>The Mini App is a <strong>React SPA</strong> built with Vite. Tailwind loads from CDN in <code>index.html</code>. The app:</p>
+          <ol class="list-decimal list-inside text-sm space-y-1 mt-2">
+            <li>Calls <code>Telegram.WebApp.ready()</code> and <code>expand()</code></li>
+            <li>Fetches products from the API</li>
+            <li>Shows a product grid with "Add to cart" buttons</li>
+            <li>Shows a cart with total and "Checkout" button</li>
+            <li>POSTs order to the API, then optionally calls <code>sendData</code></li>
+          </ol>
+          <p class="text-sm mt-2">If <code>Telegram.WebApp</code> is not available (opened outside Telegram), show a fallback message.</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-green-500">
+          <h3 class="font-bold text-green-600 mb-2">🖥️ Code</h3>
+          <pre class="bg-gray-900 text-green-300 rounded p-3 text-xs overflow-x-auto"><code>&lt;!-- index.html (Tailwind via CDN) --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport"
+    content="width=device-width, initial-scale=1.0" /&gt;
+  &lt;title&gt;TG Shop&lt;/title&gt;
+  &lt;script
+    src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;
+  &lt;script
+    src="https://telegram.org/js/telegram-web-app.js"&gt;
+  &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id="root"&gt;&lt;/div&gt;
+  &lt;script type="module"
+    src="/src/main.tsx"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500">
+          <h3 class="font-bold text-yellow-600 mb-2">✅ Output</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>Open <code>http://localhost:5173</code> → see "Open in Telegram" fallback ✓</li>
+            <li>Open via Telegram bot → products load, cart works ✓</li>
+            <li>Checkout creates order in database ✓</li>
+            <li>Bot receives order confirmation ✓</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-purple-500">
+          <h3 class="font-bold text-purple-600 mb-2">🧪 Practice</h3>
+          <ol class="list-decimal list-inside text-sm space-y-1">
+            <li>Change the product card layout — try a list view instead of grid.</li>
+            <li>Add a "quantity" selector (+ / −) on each cart item.</li>
+            <li>Style the checkout button with Telegram's theme colors using <code>Telegram.WebApp.themeParams</code>.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== STAGE 7 ==================== -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">Stage 7 — Local Test Checklist</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-blue-500">
+          <h3 class="font-bold text-blue-600 mb-2">💡 Concept</h3>
+          <p>Testing a Telegram Mini App locally requires HTTPS. We use <strong>ngrok</strong> to tunnel localhost:5173 (web) and localhost:3001 (api) to public HTTPS URLs. Then we set <code>WEBAPP_URL</code> on the bot to the ngrok web URL.</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-green-500">
+          <h3 class="font-bold text-green-600 mb-2">🖥️ Code</h3>
+          <pre class="bg-gray-900 text-green-300 rounded p-3 text-xs overflow-x-auto"><code># Terminal 1 — MySQL
+docker compose up -d
+
+# Terminal 2 — API
+cd apps/api && npm run dev
+
+# Terminal 3 — Web
+cd apps/web && npm run dev
+
+# Terminal 4 — ngrok for web
+ngrok http 5173
+# Copy the https://xxxx.ngrok.io URL
+
+# Terminal 5 — ngrok for API (optional if web proxies)
+ngrok http 3001
+
+# Update .env files with ngrok URLs
+# WEBAPP_URL=https://xxxx.ngrok-free.app
+# VITE_API_URL=https://yyyy.ngrok-free.app
+
+# Terminal 6 — Bot
+cd apps/bot && npm run dev</code></pre>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500">
+          <h3 class="font-bold text-yellow-600 mb-2">✅ Output</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>MySQL container running ✓</li>
+            <li>API responds on localhost:3001 ✓</li>
+            <li>Web loads on localhost:5173 ✓</li>
+            <li>ngrok URLs are HTTPS ✓</li>
+            <li>Bot sends "Open Shop" button ✓</li>
+            <li>Full flow: open → browse → add → checkout → order saved ✓</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-purple-500">
+          <h3 class="font-bold text-purple-600 mb-2">🧪 Practice</h3>
+          <ol class="list-decimal list-inside text-sm space-y-1">
+            <li>Complete the full flow end-to-end: open → add 2 items → checkout → verify order in Prisma Studio.</li>
+            <li>Kill the API — observe how the web app handles the error.</li>
+            <li>Open the web URL directly in a browser (not Telegram) — see the fallback message.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== STAGE 8 ==================== -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">Stage 8 — Deploy Checklist</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-blue-500">
+          <h3 class="font-bold text-blue-600 mb-2">💡 Concept</h3>
+          <p>Deploy each part to a cloud provider:</p>
+          <ul class="list-disc list-inside text-sm space-y-1 mt-2">
+            <li><strong>Web</strong> → Vercel / Netlify / Cloudflare Pages (free static hosting with HTTPS)</li>
+            <li><strong>API</strong> → Render / Railway / Fly.io (Node.js hosting with env vars)</li>
+            <li><strong>Bot</strong> → Same as API or a VPS (polling = no HTTPS needed)</li>
+            <li><strong>MySQL</strong> → PlanetScale / Railway / AWS RDS (managed MySQL, free tiers available)</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-green-500">
+          <h3 class="font-bold text-green-600 mb-2">🖥️ Code</h3>
+          <pre class="bg-gray-900 text-green-300 rounded p-3 text-xs overflow-x-auto"><code># Deploy Web to Vercel
+cd apps/web
+npx vercel
+
+# Deploy API to Render
+# 1. Push to GitHub
+# 2. Render → New Web Service → connect repo
+# 3. Root directory: apps/api
+# 4. Build: npm run build
+# 5. Start: npm start
+# 6. Set env vars:
+#   DATABASE_URL=mysql://...
+#   TELEGRAM_BOT_TOKEN=...
+#   CORS_ORIGIN=https://your-web.vercel.app
+
+# Deploy Bot to Render
+# Same as API, root: apps/bot
+# Set env vars:
+#   TELEGRAM_BOT_TOKEN=...
+#   WEBAPP_URL=https://your-web.vercel.app</code></pre>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500">
+          <h3 class="font-bold text-yellow-600 mb-2">✅ Output</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li>Web loads on <code>https://your-web.vercel.app</code> ✓</li>
+            <li>API health: <code>https://your-api.onrender.com/health</code> → <code>{"ok":true}</code> ✓</li>
+            <li>Bot responds to <code>/start</code> with "Open Shop" ✓</li>
+            <li>Full flow works over production URLs ✓</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-purple-500">
+          <h3 class="font-bold text-purple-600 mb-2">🧪 Practice</h3>
+          <ol class="list-decimal list-inside text-sm space-y-1">
+            <li>Deploy to at least one provider and test the full flow.</li>
+            <li>Set up a free PlanetScale or Railway MySQL and connect the API to it.</li>
+            <li>Switch the bot from polling to webhook mode for production.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== STAGE 9 ==================== -->
+    <section>
+      <h2 class="text-2xl font-bold text-blue-700 border-b-2 border-blue-200 pb-2 mb-6">Stage 9 — Hardening &amp; Extensions</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-blue-500">
+          <h3 class="font-bold text-blue-600 mb-2">💡 Concept — Hardening</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li><strong>CORS</strong> — restrict to your web domain only</li>
+            <li><strong>Rate limiting</strong> — use <code>express-rate-limit</code> to prevent abuse</li>
+            <li><strong>Validation</strong> — use <code>Zod</code> to validate request bodies</li>
+            <li><strong>Logging</strong> — structured logs (console or pino)</li>
+            <li><strong>Env separation</strong> — <code>.env.development</code> vs <code>.env.production</code></li>
+            <li><strong>Error handling</strong> — centralized error middleware that never leaks internals</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-green-500">
+          <h3 class="font-bold text-green-600 mb-2">🖥️ Code — Hardening Examples</h3>
+          <pre class="bg-gray-900 text-green-300 rounded p-3 text-xs overflow-x-auto"><code>// Rate Limiting
+import rateLimit from "express-rate-limit";
+app.use(rateLimit({ windowMs: 60_000, max: 60 }));
+
+// Zod validation (POST /orders)
+import { z } from "zod";
+const OrderSchema = z.object({
+  items: z.array(z.object({
+    productId: z.number().int().positive(),
+    qty: z.number().int().min(1).max(99),
+  })).min(1),
+});
+
+// Centralized error handler
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: "Internal error" });
+});</code></pre>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-yellow-500">
+          <h3 class="font-bold text-yellow-600 mb-2">✅ Extensions (Next Steps)</h3>
+          <ul class="list-disc list-inside text-sm space-y-1">
+            <li><strong>Admin CRUD</strong> — protect with a secret or admin telegramId list, build product management UI</li>
+            <li><strong>Payments</strong> — integrate Telegram Payments API or Stripe. Outline: create invoice → user pays → webhook confirms → update order status</li>
+            <li><strong>Order status</strong> — add status updates (processing → shipped → delivered) and bot notifications</li>
+            <li><strong>Product images</strong> — upload to S3/Cloudflare R2, store URL in DB</li>
+            <li><strong>Search &amp; categories</strong> — add category model, filter UI</li>
+          </ul>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5 border-l-4 border-purple-500">
+          <h3 class="font-bold text-purple-600 mb-2">🧪 Practice</h3>
+          <ol class="list-decimal list-inside text-sm space-y-1">
+            <li>Add rate limiting to the API and test with rapid requests.</li>
+            <li>Add Zod validation to <code>POST /orders</code> — send bad data and observe 400 errors.</li>
+            <li>Create an admin-only endpoint that checks <code>telegramId</code> against an allow-list.</li>
+            <li>Outline a payment flow on paper before coding it.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="bg-gray-800 text-gray-400 text-center py-6 mt-12">
+    <p class="text-sm">Telegram Mini App Shop Guide · Built with TypeScript + Express + React + Prisma (MySQL) + grammY</p>
+  </footer>
+
+</body>
+</html>
