@@ -1,0 +1,13 @@
+{
+  "name": "telegram-mini-app-shop",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "dev:api": "npm -w apps/api run dev",
+    "dev:bot": "npm -w apps/bot run dev",
+    "dev:web": "npm -w apps/web run dev",
+    "build:api": "npm -w apps/api run build",
+    "build:bot": "npm -w apps/bot run build",
+    "build:web": "npm -w apps/web run build"
+  }
+}
